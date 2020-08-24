@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="ko">
+
+<head>
+    <!-- Webpage Title -->
+    <title>의약품 가격 리뷰 | 서치팜</title>
+
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+          integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm"
+          crossorigin="anonymous">
+
+    <!-- JS -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"
+            integrity="sha384-ApNbgh9B+Y1QKtv3Rn7W3mgPxhU9K/ScQsAP7hUibX39j7fakFPskvXusvfa0b4Q"
+            crossorigin="anonymous"></script>
+
+    <!-- 구글폰트 -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+KR:wght@100;300;400;500;700;900&display=swap"
+          rel="stylesheet">
+
+    <script type="text/javascript">
+
+        $(document).ready(function () {
+            $("#reviews-box").html("");
+        });
+
+        function showPharm() {
+            const search_text = $("#search_input").val()
+            $.ajax({
+                type: "GET",
+                url: `/search?search_text=${search_text}`,
+                data: {},
+                success: function (response) {
+                    if (response["result"] == "success") {
+                        const search = response['search']
+                        for (let i = 0; i < search.length; i++) {
+                            const search_outcome = search[i]
+                            makeCard(search_outcome["Name"], search_outcome["Address"])
+                            console.log(search_outcome)
+                        }
+                    } else {
+                        alert("약국 이름을 확인해주세요.");
+                    }
+                }
+            })
+        }
+
+        function makeCard(Name, Address) {
+            let tempHtml = `<tr>
+                        <td>${Name}</td>
+                        <td>${Address}</td>
+                    </tr>`;
+            $("#search-pharm").append(tempHtml);
+        }
+    </script>
+
+    <style type="text/css">
+        * {
+            font-family: 'Nanum Gothic';
+            font-weight: lighter;
+        }
+
+        h1,
+        h5 {
+            display: inline;
+        }
+
+        .info {
+            margin-top: 50px;
+            text-align: center;
+            font-family: "나눔바른고딕 Light";
+            color: gray;
+        }
+
+        .info_head {
+            margin-top: 30px;
+            margin-bottom: 30px;
+            text-align: center;
+            font-family: "나눔바른고딕 Light";
+            font-weight: bold;
+        }
+
+        .review {
+            margin-top: 120px;
+            margin-bottom: 50px;
+            text-align: center;
+            font-family: "나눔바른고딕 UltraLight";
+
+        }
+
+        .reviews {
+            margin-top: 100px;
+            font-family: "나눔바른고딕 UltraLight";
+
+        }
+
+        .table {
+            margin-top: 50px;
+            margin-bottom: 50px;
+            text-align: center;
+            font-family: "나눔바른고딕 UltraLight";
+
+        }
+
+        .input-group-text {
+            font-family: "나눔바른고딕 UltraLight";
+            align-content: center;
+
+        }
+
+        .styles__StyledTitle-sc-15ghu8o-0 haQKDB {
+            font-family: "나눔바른고딕 UltraLight";
+
+
+        }
+    </style>
+</head>
+
+<body>
+<div class="info">
+    <h5>의약품 가격정보를 <br> 손쉽게 검색해보자!</h5>
+    <p></p></div>
+<div class="info_head">
+    <h1>서치팜</h1>
+</div>
+<div class="input-group mb-3">
+    <div class="input-group-prepend">
+        <span class="input-group-text" style>약국 이름</span>
+    </div>
+    <input type="text" class="form-control" id="search_input">
+</div>
+<div class="review">
+    <button onclick="showPharm()" type="button" class="btn btn-primary">검색하기</button>
+</div>
+</div>
+<div class="reviews">
+    <table class="table">
+        <thead>
+        <tr>
+            <th scope="col">약국 이름</th>
+            <th scope="col">주소</th>
+        </tr>
+        </thead>
+        <tbody id="search-pharm">
+        <tr>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+</div>
+</body>
+
+</html>
